@@ -23,14 +23,35 @@ namespace MazeRunnerr.SpawnManager
                 {
                     if (GameWalls[i].X == GameWalls[j].X && GameWalls[i].Y == GameWalls[j].Y && i != j)
                     {
-                        GameWalls[i].X = random.Next(1, Size - 2);
-                        GameWalls[i].Y = random.Next(1, Size - 2);
                         return true;
                     }
                 }
             }
-
             return false;
+        }
+
+        public void ChangePosition()
+        {
+            bool enemySpawnControl = false;
+            while (!enemySpawnControl)
+            {
+                if (CheckSpawn())
+                {
+                    UpdatePosition();
+                    continue;
+                }
+                enemySpawnControl = true;
+            }
+        }
+
+        public void UpdatePosition()
+        {
+            Random random = new Random();
+            foreach (var gameWall in GameWalls)
+            {
+                gameWall.X = random.Next(1, Size - 2);
+                gameWall.Y = random.Next(1, Size - 2);
+            }
         }
     }
 }

@@ -19,18 +19,39 @@ namespace MazeRunnerr.SpawnManager
         }
         public bool CheckSpawn()
         {
-            Random random = new Random();
             foreach (var gameWall in GameWalls)
             {
                 if (gameWall.X == Player.X && gameWall.Y == Player.Y)
                 {
-                    gameWall.X = random.Next(1, Size - 2);
-                    gameWall.Y = random.Next(1, Size - 2);
                     return true;
                 }
             }
 
             return false;
+        }
+
+        public void ChangePosition()
+        {
+            bool enemySpawnControl = false;
+            while (!enemySpawnControl)
+            {
+                if (CheckSpawn())
+                {
+                    UpdatePosition();
+                    continue;
+                }
+                enemySpawnControl = true;
+            }
+        }
+
+        public void UpdatePosition()
+        {
+            Random random = new Random();
+            foreach (var gameWall in GameWalls)
+            {
+                gameWall.X = random.Next(1, Size - 2);
+                gameWall.Y = random.Next(1, Size - 2);
+            }
         }
     }
 }

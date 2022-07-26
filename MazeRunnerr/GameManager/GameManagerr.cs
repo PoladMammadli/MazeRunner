@@ -9,7 +9,7 @@ namespace MazeRunnerr.GameManager
 {
     public class GameManagerr
     {
-        public Random Random { get; set; } = new Random();
+        public Random Random = new Random();
 
         public List<IGameWall> CreateGameWalls(int size)
         {
@@ -29,7 +29,7 @@ namespace MazeRunnerr.GameManager
             return playerSpawn;
         }
 
-        public List<IGameEnemy> CreateTrap(int size)
+        public List<IGameEnemy> CreateTraps(int size)
         {
             int enemyCount = size / 3;
             List<IGameEnemy> gameEnemies = new List<IGameEnemy>();
@@ -40,5 +40,7 @@ namespace MazeRunnerr.GameManager
             }
             return gameEnemies;
         }
+
+
     }
 }

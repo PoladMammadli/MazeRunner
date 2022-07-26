@@ -26,40 +26,17 @@ namespace MazeRunnerr
 
             IPlayer playerSpawn = gameManager.CreatePlayer();
 
-            List<IGameEnemy> gameEnemies = gameManager.CreateTrap(size);
+            List<IGameEnemy> gameEnemies = gameManager.CreateTraps(size);
 
+            
             IEnemySpawnManager spawnManager = new EnemySpawnManager(gameEnemies, size);
-            bool enemySpawnControl = false;
-            while (!enemySpawnControl)
-            {
-                if (spawnManager.CheckSpawn())
-                {
-                    continue;
-                }
-                enemySpawnControl = true;
-            }
+            spawnManager.ChangePosition();
 
             IWallSpawnManager wallSpawnManager = new WallSpawnManager(gameWalls, size);
-            bool wallSpawnControl = false;
-            while (!wallSpawnControl)
-            {
-                if (wallSpawnManager.CheckSpawn())
-                {
-                    continue;
-                }
-                wallSpawnControl = true;
-            }
+            wallSpawnManager.ChangePosition();
 
             IPlayerWallSpawnManager playerWallSpawnManager = new PlayerWallSpawnManager(playerSpawn, gameWalls, size);
-            bool playerWallSpawnControl = false;
-            while (!playerWallSpawnControl)
-            {
-                if (playerWallSpawnManager.CheckSpawn())
-                {
-                    continue;
-                }
-                playerWallSpawnControl = true;
-            }
+            playerWallSpawnManager.ChangePosition();
 
             ConsoleKey key = 0;
             IPlayerPositionManager playerPositionManager = new PlayerPositionManager(playerSpawn, gameEnemies, gameWalls, size);

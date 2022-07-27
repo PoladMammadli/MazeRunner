@@ -40,7 +40,7 @@ namespace MazeRunnerr
 
             ConsoleKey key;
             IPlayerPositionManager playerPositionManager = new PlayerPositionManager(playerSpawn, gameEnemies, gameWalls, size);
-            IEnemyPositionManager enemyPositionManager = null;
+            IEnemyPositionManager enemyPositionManager = new EnemyPositionManager(playerSpawn, gameWalls, gameEnemies, size);
             Update(playerSpawn, gameWalls, gameEnemies, size);
 
             do
@@ -62,7 +62,7 @@ namespace MazeRunnerr
                 {
                     Console.WriteLine();
                     Console.WriteLine("enter valid key");
-                    continue;    
+                    continue;
                 }
                 
                 playerPositionManager.Key = playerDirection;
@@ -81,40 +81,7 @@ namespace MazeRunnerr
                     playerTouchedEnemy = true;
                 }
 
-                foreach (var gameEnemy in gameEnemies)
-                {
-                    var enemyDirectionValue = random.Next(0, 4);
-                    enemyDirection = (Direction)enemyDirectionValue;
-                    enemyPositionManager = new EnemyPositionManager(playerSpawn, gameWalls, gameEnemy, size);
-                    enemyPositionManager.EnemyDirection = enemyDirection;
-                    
-                    bool checkedWE = false;
-                    while (!checkedWE)
-                    {
-                        if (!enemyPositionManager.CheckEnemyPlayerPosition())
-                        {
-                            enemyTouchedPlayer = true;
-                            crashedEnemyDirection = enemyPositionManager.EnemyDirection;
-                        }
-                        if (enemyPositionManager.CheckEnemyWallPosition())
-                        {
-                            gameEnemy.Move(enemyDirection);
-                            checkedWE = true;
-                        }
-                        else
-                        {
-                            List<int> oldDirections = new List<int>();
-                            oldDirections.Add(enemyDirectionValue);
-                            while (oldDirections.Contains(enemyDirectionValue))
-                            {
-                                enemyDirectionValue = random.Next(0, 4);
-                            }
-                            enemyDirection = (Direction)enemyDirectionValue;
-                            enemyPositionManager.EnemyDirection = enemyDirection;
-                        }
-                    }
-                    checkedWE = false;
-                }
+                enemyPositionManager.ManageEnemyPositions(ref enemyTouchedPlayer);
 
                 if (playerTouchedEnemy && enemyTouchedPlayer)
                 {

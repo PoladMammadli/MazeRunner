@@ -11,22 +11,22 @@ namespace MazeRunnerr.PositionManager
     public class EnemyPositionManager : IEnemyPositionManager
     {
         public List<IGameWall> GameWalls { get; set; }
-        public IGameEnemy GameEnemy { get; set; }
+        public List<IGameEnemy> GameEnemies { get; set; }
         public IPlayer Player { get; set; }
         public Direction EnemyDirection { get; set; }
         public int Size { get; set; }
 
-        public EnemyPositionManager(IPlayer player, List<IGameWall> gameWalls, IGameEnemy gameEnemy, int size)
+        public EnemyPositionManager(IPlayer player, List<IGameWall> gameWalls, List<IGameEnemy> gameEnemies, int size)
         {
             this.Player = player;
             this.GameWalls = gameWalls;
-            this.GameEnemy = gameEnemy;
+            this.GameEnemies = gameEnemies;
             this.Size = size;
         }
-        public bool CheckEnemyWallPosition()
+        public bool CheckEnemyWallPosition(IGameEnemy gameEnemy)
         {
-            int gameEnemyX = GameEnemy.X;
-            int gameEnemyY = GameEnemy.Y;
+            int gameEnemyX = gameEnemy.X;
+            int gameEnemyY = gameEnemy.Y;
             foreach (var gameWall in GameWalls)
             {
                 int gameWallX = gameWall.X;
@@ -51,13 +51,12 @@ namespace MazeRunnerr.PositionManager
             return true;
         }
 
-        public bool CheckEnemyPlayerPosition()
+        public bool CheckEnemyPlayerPosition(IGameEnemy gameEnemy)
         {
             int playerX = Player.X;
             int playerY = Player.Y;
-
-            int enemyX = GameEnemy.X;
-            int enemyY = GameEnemy.Y;
+            int enemyX = gameEnemy.X;
+            int enemyY = gameEnemy.Y;
             if (playerY == enemyY + 1 && playerX == enemyX && EnemyDirection == Direction.DownArrow)
             {
                 return false;
@@ -75,6 +74,50 @@ namespace MazeRunnerr.PositionManager
                 return false;
             }
             return true;
+        }
+
+        public Direction DefineEnemyDirection()
+        {
+            Random random = new Random();
+            var enemyDirectionValue = random.Next(0, 4);
+            EnemyDirection = (Direction)enemyDirectionValue;
+            return EnemyDirection;
+        }
+
+        public void ManageEnemyPositions(ref bool enemyTouchedPlayer)
+        {
+            Random random = new Random();
+            foreach (var gameEnemy in GameEnemies)
+            {
+                Direction enemyDirection = DefineEnemyDirection();
+
+                bool checkedWE = false;
+                while (!checkedWE)
+                {
+                    if (!CheckEnemyPlayerPosition(gameEnemy))
+                    {
+                        enemyTouchedPlayer = true;
+                    }
+                    if (CheckEnemyWallPosition(gameEnemy))
+                    {
+                        gameEnemy.Move(enemyDirection);
+                        checkedWE = true;
+                    }
+                    else
+                    {
+                        List<int> oldDirections = new List<int>();
+                        int enemyDirectionValue = (int)enemyDirection;
+                        oldDirections.Add(enemyDirectionValue);
+                        while (oldDirections.Contains(enemyDirectionValue))
+                        {
+                            enemyDirectionValue = random.Next(0, 4);
+                        }
+                        enemyDirection = (Direction)enemyDirectionValue;
+                        EnemyDirection = enemyDirection;
+                    }
+                }
+                checkedWE = false;
+            }
         }
     }
 }

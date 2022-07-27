@@ -50,5 +50,31 @@ namespace MazeRunnerr.PositionManager
             }
             return true;
         }
+
+        public bool CheckEnemyPlayerPosition()
+        {
+            int playerX = Player.X;
+            int playerY = Player.Y;
+
+            int enemyX = GameEnemy.X;
+            int enemyY = GameEnemy.Y;
+            if (playerY == enemyY + 1 && playerX == enemyX && EnemyDirection == Direction.DownArrow)
+            {
+                return false;
+            }
+            else if (playerY == enemyY - 1 && playerX == enemyX && EnemyDirection == Direction.UpArrow)
+            {
+                return false;
+            }
+            else if (playerX == enemyX + 1 && playerY == enemyY && EnemyDirection == Direction.RightArrow)
+            {
+                return false;
+            }
+            else if (playerX == enemyX - 1 && playerY == enemyY && EnemyDirection == Direction.LeftArrow)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

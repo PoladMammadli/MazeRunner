@@ -17,6 +17,7 @@ namespace MazeRunnerr.PositionManager
         Direction Key { get; set; }
         Direction EnemyKey { get; set; }
         bool CheckPlayerWallPosition();
-
+        bool CheckPlayerEnemyPosition();
+        bool FinalPlayerEnemyCheck();
     }
 }

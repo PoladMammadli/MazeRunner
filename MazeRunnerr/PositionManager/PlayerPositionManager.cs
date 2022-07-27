@@ -54,87 +54,62 @@ namespace MazeRunnerr.PositionManager
             return true;
         }
 
+        public bool CheckPlayerEnemyPosition()
+        {
+            int playerX = Player.X;
+            int playerY = Player.Y;
 
+            foreach (var gameEnemy in GameEnemies)
+            {
+                int enemyX = gameEnemy.X;
+                int enemyY = gameEnemy.Y;
+                if (playerY + 1 == enemyY && playerX == enemyX && Key == Direction.DownArrow)
+                {
+                    return false;
+                }
+                else if(playerY - 1 == enemyY && playerX == enemyX && Key == Direction.UpArrow)
+                {
+                    return false;
+                }
+                else if(playerX + 1 == enemyX && playerY == enemyY && Key == Direction.RightArrow)
+                {
+                    return false;
+                }
+                else if(playerX -1 == enemyX && playerY == enemyY && Key == Direction.LeftArrow)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
 
-        //public bool IsValidPosition()
-        //{
-        //    int playerX = Player.X;
-        //    int playerY = Player.Y;
-        //    foreach (var gameEnemy in GameEnemies)
-        //    {
-        //        int gameEnemyX = gameEnemy.X;
-        //        int gameEnemyY = gameEnemy.Y;
+        public bool FinalPlayerEnemyCheck()
+        {
+            int playerX = Player.X;
+            int playerY = Player.Y;
 
-        //        switch (Key)
-        //        {
-        //            case Direction.DownArrow:
-        //                if (playerY + 1 == gameEnemyY && playerX == gameEnemyX && EnemyKey == Direction.UpArrow)
-        //                {
-        //                    return false;
-        //                }
-        //                playerY++;
-        //                break;
-        //            case Direction.UpArrow:
-        //                if (playerY - 1 == gameEnemyY && playerX == gameEnemyX && EnemyKey == Direction.DownArrow)
-        //                {
-        //                    return false;
-        //                }
-        //                playerY--;
-        //                break;
-        //            case Direction.RightArrow:
-        //                if (playerX + 1 == gameEnemyX && playerY == gameEnemyY && EnemyKey == Direction.LeftArrow)
-        //                {
-        //                    return false;
-        //                }
-        //                playerX++;
-        //                break;
-        //            case Direction.LeftArrow:
-        //                if (playerX - 1 == gameEnemyX && playerY == gameEnemyY && EnemyKey == Direction.RightArrow)
-        //                {
-        //                    return false;
-        //                }
-        //                playerX--;
-        //                break;
-        //            default:
-        //                break;
-        //        }
-        //    }
-        //    foreach (var gameEnemy2 in GameEnemies)
-        //    {
-        //        int gameEnemyX = gameEnemy2.X;
-        //        int gameEnemyY = gameEnemy2.Y;
-
-        //        switch (EnemyKey)
-        //        {
-        //            case Direction.DownArrow:
-        //                if (playerY == gameEnemyY + 1 && playerX == gameEnemyX)
-        //                {
-        //                    return false;
-        //                }
-        //                break;
-        //            case Direction.UpArrow:
-        //                if (playerY == gameEnemyY - 1 && playerX == gameEnemyX)
-        //                {
-        //                    return false;
-        //                }
-        //                break;
-        //            case Direction.RightArrow:
-        //                if (playerX == gameEnemyX + 1 && playerY == gameEnemyY)
-        //                {
-        //                    return false;
-        //                }
-        //                break;
-        //            case Direction.LeftArrow:
-        //                if (playerX == gameEnemyX - 1 && playerY == gameEnemyY)
-        //                {
-        //                    return false;
-        //                }
-        //                break;
-        //            default:
-        //                break;
-        //        }
-        //    }
-        //    return true;
-        //}
+            foreach (var gameEnemy in GameEnemies)
+            {
+                int enemyX = gameEnemy.X;
+                int enemyY = gameEnemy.Y;
+                if (playerY == enemyY && playerX == enemyX)
+                {
+                    return false;
+                }
+                else if (playerY == enemyY && playerX == enemyX)
+                {
+                    return false;
+                }
+                else if (playerX == enemyX && playerY == enemyY)
+                {
+                    return false;
+                }
+                else if (playerX == enemyX && playerY == enemyY)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }

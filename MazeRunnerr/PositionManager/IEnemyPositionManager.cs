@@ -14,5 +14,6 @@ namespace MazeRunnerr.PositionManager
         public Direction EnemyDirection { get; set; }
         public int Size { get; set; }
         bool CheckEnemyWallPosition();
+        bool CheckEnemyPlayerPosition();
     }
 }

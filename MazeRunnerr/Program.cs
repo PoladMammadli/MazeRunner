@@ -30,7 +30,7 @@ namespace MazeRunnerr
 
             
             IEnemySpawnManager spawnManager = new EnemySpawnManager(gameEnemies, size);
-            spawnManager.ChangePosition();
+            spawnManager.ChangePosition(); //
 
             IWallSpawnManager wallSpawnManager = new WallSpawnManager(gameWalls, size);
             wallSpawnManager.ChangePosition();
@@ -38,8 +38,9 @@ namespace MazeRunnerr
             IPlayerWallSpawnManager playerWallSpawnManager = new PlayerWallSpawnManager(playerSpawn, gameWalls, size);
             playerWallSpawnManager.ChangePosition();
 
-            ConsoleKey key = 0;
+            ConsoleKey key;
             IPlayerPositionManager playerPositionManager = new PlayerPositionManager(playerSpawn, gameEnemies, gameWalls, size);
+            IEnemyPositionManager enemyPositionManager = null;
             Update(playerSpawn, gameWalls, gameEnemies, size);
 
             do
@@ -51,6 +52,7 @@ namespace MazeRunnerr
                 }
                 string playerInput = key.ToString();
                 Direction enemyDirection;
+                Direction crashedEnemyDirection = default;
                 Direction playerDirection;
                 try
                 {
@@ -58,27 +60,42 @@ namespace MazeRunnerr
                 }
                 catch (ArgumentException)
                 {
+                    Console.WriteLine();
                     Console.WriteLine("enter valid key");
                     continue;    
                 }
                 
                 playerPositionManager.Key = playerDirection;
-                bool checkedPW = false;
+                bool playerTouchedWall = false;
+                bool playerTouchedEnemy = false;
+                bool enemyTouchedPlayer = false;
+                bool playerCanMove = true;
 
-                if (playerPositionManager.CheckPlayerWallPosition())
+                if (!playerPositionManager.CheckPlayerWallPosition())
                 {
-                    checkedPW = true;
+                    playerTouchedWall = true;
+                    playerCanMove = false;
+                }
+                if (!playerPositionManager.CheckPlayerEnemyPosition())
+                {
+                    playerTouchedEnemy = true;
                 }
 
                 foreach (var gameEnemy in gameEnemies)
                 {
                     var enemyDirectionValue = random.Next(0, 4);
                     enemyDirection = (Direction)enemyDirectionValue;
-                    IEnemyPositionManager enemyPositionManager = new EnemyPositionManager(playerSpawn, gameWalls, gameEnemy, size);
+                    enemyPositionManager = new EnemyPositionManager(playerSpawn, gameWalls, gameEnemy, size);
                     enemyPositionManager.EnemyDirection = enemyDirection;
+                    
                     bool checkedWE = false;
                     while (!checkedWE)
                     {
+                        if (!enemyPositionManager.CheckEnemyPlayerPosition())
+                        {
+                            enemyTouchedPlayer = true;
+                            crashedEnemyDirection = enemyPositionManager.EnemyDirection;
+                        }
                         if (enemyPositionManager.CheckEnemyWallPosition())
                         {
                             gameEnemy.Move(enemyDirection);
@@ -97,12 +114,31 @@ namespace MazeRunnerr
                         }
                     }
                     checkedWE = false;
-                    
                 }
 
-                if (checkedPW)
+                if (playerTouchedEnemy && enemyTouchedPlayer)
+                {
+                    Console.WriteLine("Game Over 1");
+                    Console.WriteLine($"Player move {playerDirection} Enemy move {crashedEnemyDirection}");
+                    return;
+                }
+
+                if (playerTouchedWall && enemyTouchedPlayer)
+                {
+                    Console.WriteLine("Game Over 2");
+                    Console.WriteLine($"Player move {playerDirection} Enemy move {crashedEnemyDirection}");
+                    return;
+                }
+
+                if (playerCanMove)
                 {
                     playerSpawn.Move(playerDirection);
+                }
+
+                if (!playerPositionManager.FinalPlayerEnemyCheck())
+                {
+                    Console.WriteLine("Game Over 3");
+                    return;
                 }
 
                 Update(playerSpawn, gameWalls, gameEnemies, size);
@@ -179,25 +215,5 @@ namespace MazeRunnerr
                 Console.WriteLine();
             }
         }
-        //public static ConsoleKey DefineEnemyMove(Direction key)
-        //{
-        //    if (key == Direction.Down)
-        //    {
-        //        return ConsoleKey.DownArrow;
-        //    }
-        //    else if (key == Direction.Up)
-        //    {
-        //        return ConsoleKey.UpArrow;
-        //    }
-        //    else if (key == Direction.Left)
-        //    {
-        //        return ConsoleKey.LeftArrow;
-        //    }
-        //    else if (key == Direction.Right)
-        //    {
-        //        return ConsoleKey.RightArrow;
-        //    }
-        //    return 0;
-        //}
     }
 }

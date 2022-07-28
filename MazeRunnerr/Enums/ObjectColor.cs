@@ -11,5 +11,6 @@ namespace MazeRunnerr.Enums
         Blue,
         Black,
         Red,
+        Cyan,
     }
 }

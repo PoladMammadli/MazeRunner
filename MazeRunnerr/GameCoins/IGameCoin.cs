@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MazeRunnerr.GameCoins
 {
-    public interface IGameCoins : IGameObject
+    public interface IGameCoin : IGameObject
     {
 
     }

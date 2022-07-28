@@ -8,6 +8,7 @@ using MazeRunnerr.SpawnManager;
 using System;
 using System.Collections.Generic;
 using MazeRunnerr.GameManager;
+using MazeRunnerr.GameCoins;
 
 namespace MazeRunnerr
 {
@@ -28,11 +29,16 @@ namespace MazeRunnerr
 
             List<IGameEnemy> gameEnemies = gameManager.CreateTraps(size);
 
-            IEnemySpawnManager spawnManager = new EnemySpawnManager(gameEnemies, size);
-            spawnManager.ChangePosition(); //
+            List<IGameCoin> gameCoins = gameManager.CreateCoins(size);
 
             IWallSpawnManager wallSpawnManager = new WallSpawnManager(gameWalls, size);
             wallSpawnManager.ChangePosition();
+
+            ICoinSpawnManager coinSpawnManager = new CoinSpawnManager(gameCoins, size);
+            coinSpawnManager.ChangePosition();
+
+            IEnemySpawnManager spawnManager = new EnemySpawnManager(gameEnemies, size);
+            spawnManager.ChangePosition(); //
 
             IPlayerWallSpawnManager playerWallSpawnManager = new PlayerWallSpawnManager(playerSpawn, gameWalls, size);
             playerWallSpawnManager.ChangePosition();
@@ -40,7 +46,7 @@ namespace MazeRunnerr
             ConsoleKey key;
             IPlayerPositionManager playerPositionManager = new PlayerPositionManager(playerSpawn, gameEnemies, gameWalls, size);
             IEnemyPositionManager enemyPositionManager = new EnemyPositionManager(playerSpawn, gameWalls, gameEnemies, size);
-            Update(playerSpawn, gameWalls, gameEnemies, size);
+            Update(playerSpawn, gameWalls, gameEnemies, gameCoins, size);
 
             do
             {
@@ -107,12 +113,12 @@ namespace MazeRunnerr
                     return;
                 }
 
-                Update(playerSpawn, gameWalls, gameEnemies, size);
+                Update(playerSpawn, gameWalls, gameEnemies, gameCoins, size);
             } while (key != ConsoleKey.Escape);
         }
 
 
-        public static void Update(IPlayer player, List<IGameWall> gameWalls, List<IGameEnemy> gameEnemies, int size)
+        public static void Update(IPlayer player, List<IGameWall> gameWalls, List<IGameEnemy> gameEnemies, List<IGameCoin> gameCoins, int size)
         {
             Console.Clear();
             bool checkWall = false;
@@ -130,6 +136,20 @@ namespace MazeRunnerr
                             ConsoleColor color = (ConsoleColor)Enum.Parse(typeof(ConsoleColor), gameWallStr);
                             Console.ForegroundColor = color;
                             Console.Write("# ");
+                            Console.ForegroundColor = ConsoleColor.White;
+                            checkWall = true;
+                            checkWE = true;
+                            break;
+                        }
+                    }
+                    foreach (var gameCoin in gameCoins)
+                    {
+                        if (j == gameCoin.X && i == gameCoin.Y)
+                        {
+                            string gameCoinStr = gameCoin.Color.ToString();
+                            ConsoleColor color = (ConsoleColor)Enum.Parse(typeof(ConsoleColor), gameCoinStr);
+                            Console.ForegroundColor = color;
+                            Console.Write("$ ");
                             Console.ForegroundColor = ConsoleColor.White;
                             checkWall = true;
                             checkWE = true;

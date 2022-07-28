@@ -1,4 +1,5 @@
 ﻿using MazeRunnerr.EnemyObject;
+using MazeRunnerr.GameCoins;
 using MazeRunnerr.GameWallObject;
 using MazeRunnerr.Player;
 using System;
@@ -41,6 +42,15 @@ namespace MazeRunnerr.GameManager
             return gameEnemies;
         }
 
-
+        public List<IGameCoin> CreateCoins(int size)
+        {
+            List<IGameCoin> gameCoins = new List<IGameCoin>();
+            for (int i = 0; i < 5; i++)
+            {
+                IGameCoin gameCoin = new GameCoin { X = Random.Next(1, size - 2), Y = Random.Next(1, size - 2) };
+                gameCoins.Add(gameCoin);
+            }
+            return gameCoins;
+        }
     }
 }

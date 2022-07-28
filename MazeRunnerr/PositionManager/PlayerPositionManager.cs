@@ -1,5 +1,6 @@
 ﻿using MazeRunnerr.EnemyObject;
 using MazeRunnerr.Enums;
+using MazeRunnerr.GameCoins;
 using MazeRunnerr.GameWallObject;
 using MazeRunnerr.Player;
 using System;
@@ -13,16 +14,18 @@ namespace MazeRunnerr.PositionManager
         public IPlayer Player { get; set; }
         public List<IGameEnemy> GameEnemies { get; set; }
         public List<IGameWall> GameWalls { get; set; }
+        public List<IGameCoin> GameCoins { get; set; }
         public Direction Key { get; set; }
         public Direction EnemyKey { get; set; }
         public int Size { get; set; }
 
-        public PlayerPositionManager(IPlayer player, List<IGameEnemy> gameEnemies, List<IGameWall> gameWalls, int size)
+        public PlayerPositionManager(IPlayer player, List<IGameEnemy> gameEnemies, List<IGameWall> gameWalls, List<IGameCoin> gameCoins, int size)
         {
             this.Player = player;
             this.GameEnemies = gameEnemies;
-            this.Size = size;
             this.GameWalls = gameWalls;
+            this.GameCoins = gameCoins;
+            this.Size = size;
         }
 
         public bool CheckPlayerWallPosition()
@@ -54,6 +57,23 @@ namespace MazeRunnerr.PositionManager
             return true;
         }
 
+        public IGameCoin GetPlayerCoinPosition()
+        {
+            int playerX = Player.X;
+            int playerY = Player.Y;
+
+            foreach (var gameCoin in GameCoins)
+            {
+                int gameCoinX = gameCoin.X;
+                int gameCoinY = gameCoin.Y;
+                if (gameCoinX == playerX && gameCoinY == playerY)
+                {
+                    return gameCoin;
+                }
+            }
+            return null;
+        }
+
         public bool CheckPlayerEnemyPosition()
         {
             int playerX = Player.X;
@@ -67,15 +87,15 @@ namespace MazeRunnerr.PositionManager
                 {
                     return false;
                 }
-                else if(playerY - 1 == enemyY && playerX == enemyX && Key == Direction.UpArrow)
+                else if (playerY - 1 == enemyY && playerX == enemyX && Key == Direction.UpArrow)
                 {
                     return false;
                 }
-                else if(playerX + 1 == enemyX && playerY == enemyY && Key == Direction.RightArrow)
+                else if (playerX + 1 == enemyX && playerY == enemyY && Key == Direction.RightArrow)
                 {
                     return false;
                 }
-                else if(playerX -1 == enemyX && playerY == enemyY && Key == Direction.LeftArrow)
+                else if (playerX - 1 == enemyX && playerY == enemyY && Key == Direction.LeftArrow)
                 {
                     return false;
                 }
@@ -111,7 +131,5 @@ namespace MazeRunnerr.PositionManager
             }
             return true;
         }
-
-
     }
 }

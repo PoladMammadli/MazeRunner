@@ -9,5 +9,7 @@ namespace MazeRunnerr.Player
     public class Human : AbstractMovableObject, IPlayer
     {
         public override ObjectColor Color => ObjectColor.Green;
+
+        public int Point { get; set; }
     }
 }

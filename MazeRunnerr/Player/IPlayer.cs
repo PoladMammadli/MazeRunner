@@ -7,5 +7,6 @@ namespace MazeRunnerr.Player
 {
     public interface IPlayer : IMovableObject
     {
+        public int Point { get; set; }
     }
 }

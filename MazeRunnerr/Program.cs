@@ -44,8 +44,10 @@ namespace MazeRunnerr
             playerWallSpawnManager.ChangePosition();
 
             ConsoleKey key;
-            IPlayerPositionManager playerPositionManager = new PlayerPositionManager(playerSpawn, gameEnemies, gameWalls, size);
-            IEnemyPositionManager enemyPositionManager = new EnemyPositionManager(playerSpawn, gameWalls, gameEnemies, size);
+
+            IPlayerPositionManager playerPositionManager = new PlayerPositionManager(playerSpawn, gameEnemies, gameWalls, gameCoins, size);
+            IEnemyPositionManager enemyPositionManager = new EnemyPositionManager(playerSpawn, gameWalls, gameEnemies, gameCoins, size);
+
             Update(playerSpawn, gameWalls, gameEnemies, gameCoins, size);
 
             do
@@ -56,8 +58,6 @@ namespace MazeRunnerr
                     continue;
                 }
                 string playerInput = key.ToString();
-                Direction enemyDirection;
-                Direction crashedEnemyDirection = default;
                 Direction playerDirection;
                 try
                 {
@@ -69,7 +69,7 @@ namespace MazeRunnerr
                     Console.WriteLine("enter valid key");
                     continue;
                 }
-                
+
                 playerPositionManager.Key = playerDirection;
                 bool playerTouchedWall = false;
                 bool playerTouchedEnemy = false;
@@ -81,6 +81,7 @@ namespace MazeRunnerr
                     playerTouchedWall = true;
                     playerCanMove = false;
                 }
+
                 if (!playerPositionManager.CheckPlayerEnemyPosition())
                 {
                     playerTouchedEnemy = true;
@@ -91,14 +92,12 @@ namespace MazeRunnerr
                 if (playerTouchedEnemy && enemyTouchedPlayer)
                 {
                     Console.WriteLine("Game Over 1");
-                    Console.WriteLine($"Player move {playerDirection} Enemy move {crashedEnemyDirection}");
                     Console.ReadLine();
                 }
 
                 if (playerTouchedWall && enemyTouchedPlayer)
                 {
                     Console.WriteLine("Game Over 2");
-                    Console.WriteLine($"Player move {playerDirection} Enemy move {crashedEnemyDirection}");
                     Console.ReadLine();
                 }
 
@@ -107,6 +106,13 @@ namespace MazeRunnerr
                     playerSpawn.Move(playerDirection);
                 }
 
+                var removeCoin = playerPositionManager.GetPlayerCoinPosition();
+                if (removeCoin != null)
+                {
+                    gameCoins.Remove(removeCoin);
+                    playerSpawn.Point++;
+                }
+                
                 if (!playerPositionManager.FinalPlayerEnemyCheck())
                 {
                     Console.WriteLine("Game Over 3");
@@ -114,6 +120,11 @@ namespace MazeRunnerr
                 }
 
                 Update(playerSpawn, gameWalls, gameEnemies, gameCoins, size);
+                if (gameCoins.Count == 0)
+                {
+                    Console.WriteLine("Congrats! You Won");
+                    Console.ReadLine();
+                }
             } while (key != ConsoleKey.Escape);
         }
 
@@ -200,6 +211,7 @@ namespace MazeRunnerr
                 }
                 Console.WriteLine();
             }
+            Console.WriteLine($"Point {player.Point}");
         }
     }
 }

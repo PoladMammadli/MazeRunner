@@ -1,5 +1,6 @@
 ﻿using MazeRunnerr.EnemyObject;
 using MazeRunnerr.Enums;
+using MazeRunnerr.GameCoins;
 using MazeRunnerr.GameWallObject;
 using MazeRunnerr.Player;
 using System;
@@ -14,10 +15,12 @@ namespace MazeRunnerr.PositionManager
         IPlayer Player { get; set; }
         List<IGameEnemy> GameEnemies { get; set; }
         List<IGameWall> GameWalls { get; set; }
+        public List<IGameCoin> GameCoins { get; set; }
         Direction Key { get; set; }
         Direction EnemyKey { get; set; }
         bool CheckPlayerWallPosition();
         bool CheckPlayerEnemyPosition();
         bool FinalPlayerEnemyCheck();
+        IGameCoin GetPlayerCoinPosition();
     }
 }

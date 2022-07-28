@@ -1,5 +1,6 @@
 ﻿using MazeRunnerr.EnemyObject;
 using MazeRunnerr.Enums;
+using MazeRunnerr.GameCoins;
 using MazeRunnerr.GameWallObject;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace MazeRunnerr.PositionManager
     {
         public List<IGameWall> GameWalls { get; set; }
         public List<IGameEnemy> GameEnemies { get; set; }
+        public List<IGameCoin> GameCoins { get; set; }
         public Direction EnemyDirection { get; set; }
         public int Size { get; set; }
         bool CheckEnemyWallPosition(IGameEnemy gameEnemy);

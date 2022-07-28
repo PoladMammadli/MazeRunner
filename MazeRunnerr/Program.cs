@@ -28,7 +28,6 @@ namespace MazeRunnerr
 
             List<IGameEnemy> gameEnemies = gameManager.CreateTraps(size);
 
-            
             IEnemySpawnManager spawnManager = new EnemySpawnManager(gameEnemies, size);
             spawnManager.ChangePosition(); //
 
@@ -87,14 +86,14 @@ namespace MazeRunnerr
                 {
                     Console.WriteLine("Game Over 1");
                     Console.WriteLine($"Player move {playerDirection} Enemy move {crashedEnemyDirection}");
-                    return;
+                    Console.ReadLine();
                 }
 
                 if (playerTouchedWall && enemyTouchedPlayer)
                 {
                     Console.WriteLine("Game Over 2");
                     Console.WriteLine($"Player move {playerDirection} Enemy move {crashedEnemyDirection}");
-                    return;
+                    Console.ReadLine();
                 }
 
                 if (playerCanMove)

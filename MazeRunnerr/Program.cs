@@ -122,7 +122,7 @@ namespace MazeRunnerr
                 Update(playerSpawn, gameWalls, gameEnemies, gameCoins, size);
                 if (gameCoins.Count == 0)
                 {
-                    Console.WriteLine("Congrats! You Won");
+                    Console.WriteLine("Congrats! You Win");
                     Console.ReadLine();
                 }
             } while (key != ConsoleKey.Escape);
@@ -211,7 +211,7 @@ namespace MazeRunnerr
                 }
                 Console.WriteLine();
             }
-            Console.WriteLine($"Point {player.Point}");
+            Console.WriteLine($"Point {player.Point}/5");
         }
     }
 }

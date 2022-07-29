@@ -54,6 +54,42 @@ namespace MazeRunnerr.PositionManager
             return true;
         }
 
+        public bool CheckEnemyCoinPosition(IGameEnemy gameEnemy)
+        {
+            int gameEnemyX = gameEnemy.X;
+            int gameEnemyY = gameEnemy.Y;
+            foreach (var gameCoin in GameCoins)
+            {
+                int gameCoinX = gameCoin.X;
+                int gameCoinY = gameCoin.Y;
+                if (gameCoinY == gameEnemyY + 1 && gameCoinX == gameEnemyX && gameEnemy.Direction == Direction.DownArrow)
+                {
+                    Console.WriteLine("There is a coin");
+                    Console.ReadLine();
+                    return false;
+                }
+                else if (gameCoinY == gameEnemyY - 1 && gameCoinX == gameEnemyX && gameEnemy.Direction == Direction.UpArrow)
+                {
+                    Console.WriteLine("There is a coin");
+                    Console.ReadLine();
+                    return false;
+                }
+                else if (gameCoinX == gameEnemyX + 1 && gameCoinY == gameEnemyY && gameEnemy.Direction == Direction.RightArrow)
+                {
+                    Console.WriteLine("There is a coin");
+                    Console.ReadLine();
+                    return false;
+                }
+                else if (gameCoinX == gameEnemyX - 1 && gameCoinY == gameEnemyY && gameEnemy.Direction == Direction.LeftArrow)
+                {
+                    Console.WriteLine("There is a coin");
+                    Console.ReadLine();
+                    return false;
+                }
+            }
+            return true;
+        }
+
         public bool FinalCheckEnemyEnemyPosition(IGameEnemy gameEnemy)
         {
             int enemyX = gameEnemy.X;
@@ -162,11 +198,13 @@ namespace MazeRunnerr.PositionManager
                 List<int> oldDirections = new List<int>();
                 bool checkedWE = false;
                 bool checkedEE = false;
+                bool checkedCE = false;
                 bool checkedFEE = false;
-                while (!checkedWE || !checkedEE || !checkedFEE)
+                while (!checkedWE || !checkedEE || !checkedFEE || !checkedCE)
                 {
                     checkedWE = false;
                     checkedEE = false;
+                    checkedCE = false;
                     checkedFEE = false;
                     if (!CheckEnemyPlayerPosition(gameEnemy))
                     {
@@ -176,6 +214,10 @@ namespace MazeRunnerr.PositionManager
                     {
                         checkedWE = true;
                     }
+                    if (CheckEnemyCoinPosition(gameEnemy))
+                    {
+                        checkedCE = true;
+                    }
                     if (CheckEnemyEnemyPosition(gameEnemy))
                     {
                         checkedEE = true;
@@ -184,7 +226,7 @@ namespace MazeRunnerr.PositionManager
                     {
                         checkedFEE = true;
                     }
-                    if (!checkedWE || !checkedEE || !checkedFEE)
+                    if (!checkedWE || !checkedEE || !checkedFEE || !checkedCE)
                     {
                         int enemyDirectionValue = (int)gameEnemy.Direction;
                         oldDirections.Add(enemyDirectionValue);
@@ -198,7 +240,6 @@ namespace MazeRunnerr.PositionManager
                 }
 
                 gameEnemy.Move(gameEnemy.Direction);
-
             }
 
         }

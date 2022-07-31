@@ -8,7 +8,7 @@ namespace MazeRunnerr.SpawnManager
 {
     public interface IEnemySpawnManager : ISpawnManager
     {
-        public List<IGameEnemy> Enemies { get; set; }
-        public int Size { get; set; }
+        public List<IGameEnemy> Enemies { get; }
+        public int Size { get; }
     }
 }

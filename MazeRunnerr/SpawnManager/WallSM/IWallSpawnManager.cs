@@ -7,8 +7,8 @@ namespace MazeRunnerr.SpawnManager
 {
     public interface IWallSpawnManager : ISpawnManager
     {
-        public List<IGameWall> GameWalls { get; set; }
-        public int Size { get; set; }
+        public List<IGameWall> GameWalls { get; }
+        public int Size { get; }
 
     }
 }

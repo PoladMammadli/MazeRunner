@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using MazeRunnerr.GameManager;
 using MazeRunnerr.GameCoins;
+using System.Drawing;
 
 namespace MazeRunnerr
 {
@@ -16,10 +17,8 @@ namespace MazeRunnerr
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("enter the size of the Maze");
+            Console.WriteLine("Enter the size of the Maze");
             int size = int.Parse(Console.ReadLine());
-
-            Random random = new Random();
 
             GameManagerr gameManager = new GameManagerr();
 
@@ -31,18 +30,90 @@ namespace MazeRunnerr
 
             List<IGameCoin> gameCoins = gameManager.CreateCoins(size);
 
-            IWallSpawnManager wallSpawnManager = new WallSpawnManager(gameWalls, size);
-            wallSpawnManager.ChangePosition();
+            bool checkWall = false;
+            bool checkCoin = false;
+            bool checkEnemy = false;
+            bool checkPlayerWall = false;
+            bool checkEnemyPlayer = false;
+            bool checkCoinPlayer = false;
+            bool checkEnemyWall = false;
+            bool checkEnemyCoin = false;
+            bool checkCoinWall = false;
+            do
+            {
+                checkWall = false;
+                checkCoin = false;
+                checkEnemy = false;
+                checkPlayerWall = false;
+                checkEnemyPlayer = false;
+                checkCoinPlayer = false;
+                checkEnemyWall = false;
+                checkEnemyCoin = false;
+                checkCoinWall = false;
+                IWallSpawnManager wallSpawnManager = new WallSpawnManager(gameWalls, size);
+                if (wallSpawnManager.CheckSpawn())
+                {
+                    wallSpawnManager.ChangePosition();
+                    checkWall = true;
+                }
 
-            ICoinSpawnManager coinSpawnManager = new CoinSpawnManager(gameCoins, size);
-            coinSpawnManager.ChangePosition();
+                ICoinSpawnManager coinSpawnManager = new CoinSpawnManager(gameCoins, size);
+                if (coinSpawnManager.CheckSpawn())
+                {
+                    coinSpawnManager.ChangePosition();
+                    checkCoin = true;
+                }
 
-            IEnemySpawnManager spawnManager = new EnemySpawnManager(gameEnemies, size);
-            spawnManager.ChangePosition(); //
+                IEnemySpawnManager enemySpawnManager = new EnemySpawnManager(gameEnemies, size);
+                if (enemySpawnManager.CheckSpawn())
+                {
+                    enemySpawnManager.ChangePosition(); //
+                    checkEnemy = true;
+                }
 
-            IPlayerWallSpawnManager playerWallSpawnManager = new PlayerWallSpawnManager(playerSpawn, gameWalls, size);
-            playerWallSpawnManager.ChangePosition();
+                IPlayerWallSpawnManager playerWallSpawnManager = new PlayerWallSpawnManager(playerSpawn, gameWalls, size);
+                if (playerWallSpawnManager.CheckSpawn())
+                {
+                    playerWallSpawnManager.ChangePosition();
+                    checkPlayerWall = true;
+                }
 
+                IEnemyPlayerSpawnManager enemyPlayerSpawnManager = new EnemyPlayerSpawnManager(gameEnemies, playerSpawn, size);
+                if (enemyPlayerSpawnManager.CheckSpawn())
+                {
+                    enemyPlayerSpawnManager.ChangePosition();
+                    checkEnemyPlayer = true;
+                }
+
+                ICoinPlayerSpawnManager coinPlayerSpawnManager = new CoinPlayerSpawnManager(gameCoins, playerSpawn, size);
+                if (coinPlayerSpawnManager.CheckSpawn())
+                {
+                    coinPlayerSpawnManager.ChangePosition();
+                    checkCoinPlayer = true;
+                }
+
+                IEnemyWallSpawnManager enemyWallSpawnManager = new EnemyWallSpawnManager(gameEnemies, gameWalls, size);
+                if (enemyWallSpawnManager.CheckSpawn())
+                {
+                    enemyWallSpawnManager.ChangePosition();
+                    checkEnemyWall = true;
+                }
+
+                IEnemyCoinSpawnManager enemyCoinSpawnManager = new EnemyCoinSpawnManager(gameEnemies, gameCoins, size);
+                if (enemyCoinSpawnManager.CheckSpawn())
+                {
+                    enemyCoinSpawnManager.ChangePosition();
+                    checkEnemyCoin = true;
+                }
+
+                ICoinWallSpawnManager coinWallSpawnManager = new CoinWallSpawnManager(gameCoins, gameWalls, size);
+                if (coinWallSpawnManager.CheckSpawn())
+                {
+                    coinWallSpawnManager.ChangePosition();
+                    checkCoinWall = true;
+                }
+            }
+            while (checkWall || checkCoin || checkEnemy || checkPlayerWall || checkEnemyPlayer || checkCoinPlayer || checkEnemyWall || checkEnemyCoin || checkCoinWall);
             ConsoleKey key;
 
             IPlayerPositionManager playerPositionManager = new PlayerPositionManager(playerSpawn, gameEnemies, gameWalls, gameCoins, size);
@@ -70,24 +141,24 @@ namespace MazeRunnerr
                     continue;
                 }
 
-                playerPositionManager.Key = playerDirection;
+                playerPositionManager.PlayerKey = playerDirection;
                 bool playerTouchedWall = false;
                 bool playerTouchedEnemy = false;
                 bool enemyTouchedPlayer = false;
                 bool playerCanMove = true;
 
-                if (!playerPositionManager.CheckPlayerWallPosition())
+                if (!playerPositionManager.CheckPlayerWallContact())
                 {
                     playerTouchedWall = true;
                     playerCanMove = false;
                 }
 
-                if (!playerPositionManager.CheckPlayerEnemyPosition())
+                if (!playerPositionManager.CheckPlayerEnemyContact())
                 {
                     playerTouchedEnemy = true;
                 }
 
-                enemyPositionManager.ManageEnemyPositions(ref enemyTouchedPlayer);
+                enemyPositionManager.ManageEnemyContacts(ref enemyTouchedPlayer);
 
                 if (playerTouchedEnemy && enemyTouchedPlayer)
                 {
@@ -106,17 +177,17 @@ namespace MazeRunnerr
                     playerSpawn.Move(playerDirection);
                 }
 
-                var removeCoin = playerPositionManager.GetPlayerCoinPosition();
+                var removeCoin = playerPositionManager.GetRemovableCoin();
                 if (removeCoin != null)
                 {
                     gameCoins.Remove(removeCoin);
                     playerSpawn.Point++;
                 }
-                
-                if (!playerPositionManager.FinalPlayerEnemyCheck())
+
+                if (!playerPositionManager.FinalCheckPlayerEnemyContact())
                 {
                     Console.WriteLine("Game Over 3");
-                    return;
+                    Console.ReadLine();
                 }
 
                 Update(playerSpawn, gameWalls, gameEnemies, gameCoins, size);
@@ -132,6 +203,7 @@ namespace MazeRunnerr
         public static void Update(IPlayer player, List<IGameWall> gameWalls, List<IGameEnemy> gameEnemies, List<IGameCoin> gameCoins, int size)
         {
             Console.Clear();
+
             bool checkWall = false;
             bool checkWE = false;
 
@@ -211,7 +283,7 @@ namespace MazeRunnerr
                 }
                 Console.WriteLine();
             }
-            Console.WriteLine($"Point {player.Point}/5");
+            Console.WriteLine($"Point {player.Point}/{size / 2}");
         }
     }
 }

@@ -11,13 +11,12 @@ namespace MazeRunnerr.PositionManager
 {
     public class PlayerPositionManager : IPlayerPositionManager
     {
-        public IPlayer Player { get; set; }
-        public List<IGameEnemy> GameEnemies { get; set; }
-        public List<IGameWall> GameWalls { get; set; }
-        public List<IGameCoin> GameCoins { get; set; }
-        public Direction Key { get; set; }
-        public Direction EnemyKey { get; set; }
-        public int Size { get; set; }
+        public IPlayer Player { get; private set; }
+        public List<IGameEnemy> GameEnemies { get; private set; }
+        public List<IGameWall> GameWalls { get; private set; }
+        public List<IGameCoin> GameCoins { get; private set; }
+        public Direction PlayerKey { get; set; }
+        public int Size { get; private set; }
 
         public PlayerPositionManager(IPlayer player, List<IGameEnemy> gameEnemies, List<IGameWall> gameWalls, List<IGameCoin> gameCoins, int size)
         {
@@ -28,7 +27,7 @@ namespace MazeRunnerr.PositionManager
             this.Size = size;
         }
 
-        public bool CheckPlayerWallPosition()
+        public bool CheckPlayerWallContact()
         {
             int playerX = Player.X;
             int playerY = Player.Y;
@@ -37,19 +36,19 @@ namespace MazeRunnerr.PositionManager
             {
                 int gameWallX = gameWall.X;
                 int gameWallY = gameWall.Y;
-                if ((Key == Direction.DownArrow && playerY + 1 == Size - 1) || (gameWallY == playerY + 1 && gameWallX == playerX && Key == Direction.DownArrow))
+                if ((PlayerKey == Direction.DownArrow && playerY + 1 == Size - 1) || (gameWallY == playerY + 1 && gameWallX == playerX && PlayerKey == Direction.DownArrow))
                 {
                     return false;
                 }
-                else if ((Key == Direction.UpArrow && playerY - 1 == 0) || (gameWallY == playerY - 1 && gameWallX == playerX && Key == Direction.UpArrow))
+                else if ((PlayerKey == Direction.UpArrow && playerY - 1 == 0) || (gameWallY == playerY - 1 && gameWallX == playerX && PlayerKey == Direction.UpArrow))
                 {
                     return false;
                 }
-                else if ((Key == Direction.RightArrow && playerX + 1 == Size - 1) || (gameWallX == playerX + 1 && gameWallY == playerY && Key == Direction.RightArrow))
+                else if ((PlayerKey == Direction.RightArrow && playerX + 1 == Size - 1) || (gameWallX == playerX + 1 && gameWallY == playerY && PlayerKey == Direction.RightArrow))
                 {
                     return false;
                 }
-                else if ((Key == Direction.LeftArrow && playerX - 1 == 0) || (gameWallX == playerX - 1 && gameWallY == playerY && Key == Direction.LeftArrow))
+                else if ((PlayerKey == Direction.LeftArrow && playerX - 1 == 0) || (gameWallX == playerX - 1 && gameWallY == playerY && PlayerKey == Direction.LeftArrow))
                 {
                     return false;
                 }
@@ -57,7 +56,7 @@ namespace MazeRunnerr.PositionManager
             return true;
         }
 
-        public IGameCoin GetPlayerCoinPosition()
+        public IGameCoin GetRemovableCoin()
         {
             int playerX = Player.X;
             int playerY = Player.Y;
@@ -74,7 +73,7 @@ namespace MazeRunnerr.PositionManager
             return null;
         }
 
-        public bool CheckPlayerEnemyPosition()
+        public bool CheckPlayerEnemyContact()
         {
             int playerX = Player.X;
             int playerY = Player.Y;
@@ -83,19 +82,19 @@ namespace MazeRunnerr.PositionManager
             {
                 int enemyX = gameEnemy.X;
                 int enemyY = gameEnemy.Y;
-                if (playerY + 1 == enemyY && playerX == enemyX && Key == Direction.DownArrow)
+                if (playerY + 1 == enemyY && playerX == enemyX && PlayerKey == Direction.DownArrow)
                 {
                     return false;
                 }
-                else if (playerY - 1 == enemyY && playerX == enemyX && Key == Direction.UpArrow)
+                else if (playerY - 1 == enemyY && playerX == enemyX && PlayerKey == Direction.UpArrow)
                 {
                     return false;
                 }
-                else if (playerX + 1 == enemyX && playerY == enemyY && Key == Direction.RightArrow)
+                else if (playerX + 1 == enemyX && playerY == enemyY && PlayerKey == Direction.RightArrow)
                 {
                     return false;
                 }
-                else if (playerX - 1 == enemyX && playerY == enemyY && Key == Direction.LeftArrow)
+                else if (playerX - 1 == enemyX && playerY == enemyY && PlayerKey == Direction.LeftArrow)
                 {
                     return false;
                 }
@@ -103,7 +102,7 @@ namespace MazeRunnerr.PositionManager
             return true;
         }
 
-        public bool FinalPlayerEnemyCheck()
+        public bool FinalCheckPlayerEnemyContact()
         {
             int playerX = Player.X;
             int playerY = Player.Y;

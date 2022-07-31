@@ -7,8 +7,8 @@ namespace MazeRunnerr.SpawnManager
 {
     public class CoinSpawnManager : ICoinSpawnManager
     {
-        public List<IGameCoin> GameCoins { get; set; }
-        public int Size { get; set; }
+        public List<IGameCoin> GameCoins { get; private set; }
+        public int Size { get; private set; }
 
         public CoinSpawnManager(List<IGameCoin> gameCoins, int size)
         {

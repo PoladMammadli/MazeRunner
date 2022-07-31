@@ -44,8 +44,9 @@ namespace MazeRunnerr.GameManager
 
         public List<IGameCoin> CreateCoins(int size)
         {
+            int coinCount = size / 2;
             List<IGameCoin> gameCoins = new List<IGameCoin>();
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < coinCount; i++)
             {
                 IGameCoin gameCoin = new GameCoin { X = Random.Next(1, size - 2), Y = Random.Next(1, size - 2) };
                 gameCoins.Add(gameCoin);

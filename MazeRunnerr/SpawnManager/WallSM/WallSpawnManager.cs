@@ -7,8 +7,8 @@ namespace MazeRunnerr.SpawnManager
 {
     public class WallSpawnManager : IWallSpawnManager
     {
-        public List<IGameWall> GameWalls { get; set; }
-        public int Size { get; set; }
+        public List<IGameWall> GameWalls { get; private set; }
+        public int Size { get; private set; }
         public WallSpawnManager(List<IGameWall> gameWalls, int size)
         {
             this.GameWalls = gameWalls;

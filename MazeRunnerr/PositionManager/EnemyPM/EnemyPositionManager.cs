@@ -11,12 +11,12 @@ namespace MazeRunnerr.PositionManager
 {
     public class EnemyPositionManager : IEnemyPositionManager
     {
-        public List<IGameWall> GameWalls { get; set; }
-        public List<IGameEnemy> GameEnemies { get; set; }
-        public List<IGameCoin> GameCoins { get; set; }
-        public IPlayer Player { get; set; }
-        public Direction EnemyDirection { get; set; }
-        public int Size { get; set; }
+        public List<IGameWall> GameWalls { get; private set; }
+        public List<IGameEnemy> GameEnemies { get; private set; }
+        public List<IGameCoin> GameCoins { get; private set; }
+        public IPlayer Player { get; private set; }
+        public Direction EnemyDirection { get; private set; }
+        public int Size { get; private set; }
 
         public EnemyPositionManager(IPlayer player, List<IGameWall> gameWalls, List<IGameEnemy> gameEnemies, List<IGameCoin> gameCoins, int size)
         {
@@ -26,12 +26,13 @@ namespace MazeRunnerr.PositionManager
             this.GameCoins = gameCoins;
             this.Size = size;
         }
-        public bool CheckEnemyWallPosition(IGameEnemy gameEnemy)
+        public bool CheckEnemyWallContact(IGameEnemy gameEnemy)
         {
             int gameEnemyX = gameEnemy.X;
             int gameEnemyY = gameEnemy.Y;
             foreach (var gameWall in GameWalls)
             {
+
                 int gameWallX = gameWall.X;
                 int gameWallY = gameWall.Y;
                 if ((gameEnemy.Direction == Direction.DownArrow && gameEnemyY + 1 == Size - 1) || (gameWallY == gameEnemyY + 1 && gameWallX == gameEnemyX && gameEnemy.Direction == Direction.DownArrow))
@@ -54,7 +55,7 @@ namespace MazeRunnerr.PositionManager
             return true;
         }
 
-        public bool CheckEnemyCoinPosition(IGameEnemy gameEnemy)
+        public bool CheckEnemyCoinContact(IGameEnemy gameEnemy)
         {
             int gameEnemyX = gameEnemy.X;
             int gameEnemyY = gameEnemy.Y;
@@ -64,33 +65,25 @@ namespace MazeRunnerr.PositionManager
                 int gameCoinY = gameCoin.Y;
                 if (gameCoinY == gameEnemyY + 1 && gameCoinX == gameEnemyX && gameEnemy.Direction == Direction.DownArrow)
                 {
-                    Console.WriteLine("There is a coin");
-                    Console.ReadLine();
                     return false;
                 }
                 else if (gameCoinY == gameEnemyY - 1 && gameCoinX == gameEnemyX && gameEnemy.Direction == Direction.UpArrow)
                 {
-                    Console.WriteLine("There is a coin");
-                    Console.ReadLine();
                     return false;
                 }
                 else if (gameCoinX == gameEnemyX + 1 && gameCoinY == gameEnemyY && gameEnemy.Direction == Direction.RightArrow)
                 {
-                    Console.WriteLine("There is a coin");
-                    Console.ReadLine();
                     return false;
                 }
                 else if (gameCoinX == gameEnemyX - 1 && gameCoinY == gameEnemyY && gameEnemy.Direction == Direction.LeftArrow)
                 {
-                    Console.WriteLine("There is a coin");
-                    Console.ReadLine();
                     return false;
                 }
             }
             return true;
         }
 
-        public bool FinalCheckEnemyEnemyPosition(IGameEnemy gameEnemy)
+        public bool FinalCheckEnemyEnemyContact(IGameEnemy gameEnemy)
         {
             int enemyX = gameEnemy.X;
             int enemyY = gameEnemy.Y;
@@ -119,7 +112,7 @@ namespace MazeRunnerr.PositionManager
             return true;
         }
 
-        public bool CheckEnemyEnemyPosition(IGameEnemy gameEnemy)
+        public bool CheckEnemyEnemyContact(IGameEnemy gameEnemy)
         {
             int enemyX = gameEnemy.X;
             int enemyY = gameEnemy.Y;
@@ -148,7 +141,7 @@ namespace MazeRunnerr.PositionManager
             return true;
         }
 
-        public bool CheckEnemyPlayerPosition(IGameEnemy gameEnemy)
+        public bool CheckEnemyPlayerContact(IGameEnemy gameEnemy)
         {
             int playerX = Player.X;
             int playerY = Player.Y;
@@ -174,23 +167,31 @@ namespace MazeRunnerr.PositionManager
             return true;
         }
 
-        public Direction DefineEnemyDirection()
+        public void DefineEnemyDirection()
         {
             Random random = new Random();
             foreach (var gameEnemy in GameEnemies)
             {
                 var enemyDirectionValue = random.Next(0, 4);
-                EnemyDirection = (Direction)enemyDirectionValue;
-                gameEnemy.Direction = EnemyDirection;
+                gameEnemy.Direction = (Direction)enemyDirectionValue;
             }
-            //GameEnemies[0].Direction = Direction.DownArrow;
-            //GameEnemies[1].Direction = Direction.UpArrow;
-            return EnemyDirection;
         }
 
-        public void ManageEnemyPositions(ref bool enemyTouchedPlayer)
+        public Direction UpdateEnemyDirection(List<int> oldDirections, IGameEnemy gameEnemy)
         {
             Random random = new Random();
+            int enemyDirectionValue = (int)gameEnemy.Direction;
+            oldDirections.Add(enemyDirectionValue);
+            while (oldDirections.Contains(enemyDirectionValue))
+            {
+                enemyDirectionValue = random.Next(0, 4);
+            }
+            Direction enemyDirection = (Direction)enemyDirectionValue;
+            return enemyDirection;
+        }
+
+        public void ManageEnemyContacts(ref bool enemyTouchedPlayer)
+        {
             DefineEnemyDirection();
 
             foreach (var gameEnemy in GameEnemies)
@@ -206,35 +207,29 @@ namespace MazeRunnerr.PositionManager
                     checkedEE = false;
                     checkedCE = false;
                     checkedFEE = false;
-                    if (!CheckEnemyPlayerPosition(gameEnemy))
+                    if (!CheckEnemyPlayerContact(gameEnemy))
                     {
                         enemyTouchedPlayer = true;
                     }
-                    if (CheckEnemyWallPosition(gameEnemy))
+                    if (CheckEnemyWallContact(gameEnemy))
                     {
                         checkedWE = true;
                     }
-                    if (CheckEnemyCoinPosition(gameEnemy))
+                    if (CheckEnemyCoinContact(gameEnemy))
                     {
                         checkedCE = true;
                     }
-                    if (CheckEnemyEnemyPosition(gameEnemy))
+                    if (CheckEnemyEnemyContact(gameEnemy))
                     {
                         checkedEE = true;
                     }
-                    if (FinalCheckEnemyEnemyPosition(gameEnemy))
+                    if (FinalCheckEnemyEnemyContact(gameEnemy))
                     {
                         checkedFEE = true;
                     }
                     if (!checkedWE || !checkedEE || !checkedFEE || !checkedCE)
                     {
-                        int enemyDirectionValue = (int)gameEnemy.Direction;
-                        oldDirections.Add(enemyDirectionValue);
-                        while (oldDirections.Contains(enemyDirectionValue))
-                        {
-                            enemyDirectionValue = random.Next(0, 4);
-                        }
-                        gameEnemy.Direction = (Direction)enemyDirectionValue;
+                        gameEnemy.Direction = UpdateEnemyDirection(oldDirections, gameEnemy);
                         EnemyDirection = gameEnemy.Direction;
                     }
                 }

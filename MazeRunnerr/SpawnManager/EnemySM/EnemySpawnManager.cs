@@ -7,8 +7,8 @@ namespace MazeRunnerr.SpawnManager
 {
     public class EnemySpawnManager : IEnemySpawnManager
     {
-        public List<IGameEnemy> Enemies { get ; set ; }
-        public int Size { get; set; }
+        public List<IGameEnemy> Enemies { get; private set; }
+        public int Size { get; private set; }
         public EnemySpawnManager(List<IGameEnemy> enemies, int size)
         {
             this.Enemies = enemies;
@@ -37,7 +37,7 @@ namespace MazeRunnerr.SpawnManager
             {
                 if (CheckSpawn())
                 {
-                    UpdatePosition();       
+                    UpdatePosition();
                     continue;
                 }
                 enemySpawnControl = true;

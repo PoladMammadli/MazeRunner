@@ -18,7 +18,7 @@ namespace MazeRunnerr.GameManager
             List<IGameWall> gameWalls = new List<IGameWall>();
             for (int i = 0; i < wallCount; i++)
             {
-                IGameWall gameWall = new GameWall { X = Random.Next(1, size - 2), Y = Random.Next(1, size - 2) };
+                GameWall gameWall = new GameWall { X = Random.Next(1, size - 2), Y = Random.Next(1, size - 2) };
                 gameWalls.Add(gameWall);
             }
             return gameWalls;
@@ -36,7 +36,7 @@ namespace MazeRunnerr.GameManager
             List<IGameEnemy> gameEnemies = new List<IGameEnemy>();
             for (int i = 0; i < enemyCount; i++)
             {
-                IGameEnemy gameEnemy = new GameEnemy { X = Random.Next(1, size - 2), Y = Random.Next(1, size - 2) };
+                GameEnemy gameEnemy = new GameEnemy { X = Random.Next(1, size - 2), Y = Random.Next(1, size - 2) };
                 gameEnemies.Add(gameEnemy);
             }
             return gameEnemies;
@@ -48,7 +48,7 @@ namespace MazeRunnerr.GameManager
             List<IGameCoin> gameCoins = new List<IGameCoin>();
             for (int i = 0; i < coinCount; i++)
             {
-                IGameCoin gameCoin = new GameCoin { X = Random.Next(1, size - 2), Y = Random.Next(1, size - 2) };
+                GameCoin gameCoin = new GameCoin { X = Random.Next(1, size - 2), Y = Random.Next(1, size - 2) };
                 gameCoins.Add(gameCoin);
             }
             return gameCoins;

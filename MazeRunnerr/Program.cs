@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using MazeRunnerr.GameManager;
 using MazeRunnerr.GameCoins;
 using System.Drawing;
+using System.Linq;
 
 namespace MazeRunnerr
 {
@@ -17,18 +18,59 @@ namespace MazeRunnerr
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Enter the size of the Maze");
-            int size = int.Parse(Console.ReadLine());
+            List<IGameWall> gameWalls = null;
+            IPlayer playerSpawn = null;
+            List<IGameEnemy> gameEnemies = null;
+            List<IGameCoin> gameCoins = null;
+            int size = 0;
 
-            GameManagerr gameManager = new GameManagerr();
+            GameState.GameState gameState = GameState.GameState.DeSerialize();
 
-            List<IGameWall> gameWalls = gameManager.CreateGameWalls(size);
+            Console.WriteLine("- Play new game -");
+            Console.WriteLine("- Load previous game -");
 
-            IPlayer playerSpawn = gameManager.CreatePlayer();
+            Console.WriteLine("type 1 for new game");
+            Console.WriteLine("type 2 for restore game");
 
-            List<IGameEnemy> gameEnemies = gameManager.CreateTraps(size);
+            string choice = Console.ReadLine();
 
-            List<IGameCoin> gameCoins = gameManager.CreateCoins(size);
+            if (choice == "2" && gameState == null)
+            {
+                Console.WriteLine("There is no any game info");
+                return;
+            }
+
+            switch (choice)
+            {
+                case "1":
+                    Console.WriteLine("Enter the size of the Maze");
+                    size = int.Parse(Console.ReadLine());
+
+                    GameManagerr gameManager = new GameManagerr();
+
+                    gameWalls = gameManager.CreateGameWalls(size);
+
+                    playerSpawn = gameManager.CreatePlayer();
+
+                    gameEnemies = gameManager.CreateTraps(size);
+
+                    gameCoins = gameManager.CreateCoins(size);
+                    break;
+
+                case "2":
+                    size = gameState.Size;
+                    playerSpawn = gameState.Player;
+                    gameCoins = gameState.GameCoins.OfType<IGameCoin>().ToList();
+                    gameEnemies = gameState.GameEnemies.OfType<IGameEnemy>().ToList();
+                    gameWalls = gameState.GameWalls.OfType<IGameWall>().ToList();
+                    break;
+                default:
+                    Console.WriteLine("Wrong input");
+                    return;
+            }
+
+
+
 
             bool checkWall = false;
             bool checkCoin = false;
@@ -67,7 +109,7 @@ namespace MazeRunnerr
                 IEnemySpawnManager enemySpawnManager = new EnemySpawnManager(gameEnemies, size);
                 if (enemySpawnManager.CheckSpawn())
                 {
-                    enemySpawnManager.ChangePosition(); //
+                    enemySpawnManager.ChangePosition();
                     checkEnemy = true;
                 }
 
@@ -124,6 +166,20 @@ namespace MazeRunnerr
             do
             {
                 key = Console.ReadKey().Key;
+                if (key == ConsoleKey.S)
+                {
+
+                    //foreach (var gameWall in gameWalls)
+                    //{
+                    //    GameWall gameWall2 = (GameWall)gameWall;
+                    //    gameWalls2.Add(gameWall2);
+                    //}
+
+                    gameState = new GameState.GameState(playerSpawn, gameWalls, gameEnemies, gameCoins, size);
+                    gameState.Serialize();
+                    Console.WriteLine("Game saved!");
+                    return;
+                }
                 if (key == ConsoleKey.Escape)
                 {
                     continue;

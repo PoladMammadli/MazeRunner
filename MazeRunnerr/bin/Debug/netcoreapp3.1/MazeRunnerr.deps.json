@@ -7,14 +7,27 @@
   "targets": {
     ".NETCoreApp,Version=v3.1": {
       "MazeRunnerr/1.0.0": {
+        "dependencies": {
+          "MazeRunner": "1.0.0"
+        },
         "runtime": {
           "MazeRunnerr.dll": {}
+        }
+      },
+      "MazeRunner/1.0.0": {
+        "runtime": {
+          "MazeRunner.dll": {}
         }
       }
     }
   },
   "libraries": {
     "MazeRunnerr/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "MazeRunner/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

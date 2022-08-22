@@ -12,3 +12,6 @@ C:\Users\USER\Desktop\Consoleapp\MazeRunnerr\MazeRunnerr\obj\Debug\netcoreapp3.1
 C:\Users\USER\Desktop\Consoleapp\MazeRunnerr\MazeRunnerr\obj\Debug\netcoreapp3.1\MazeRunnerr.dll
 C:\Users\USER\Desktop\Consoleapp\MazeRunnerr\MazeRunnerr\obj\Debug\netcoreapp3.1\MazeRunnerr.pdb
 C:\Users\USER\Desktop\Consoleapp\MazeRunnerr\MazeRunnerr\obj\Debug\netcoreapp3.1\MazeRunnerr.genruntimeconfig.cache
+C:\Users\USER\Desktop\Consoleapp\MazeRunnerr\MazeRunnerr\bin\Debug\netcoreapp3.1\MazeRunner.dll
+C:\Users\USER\Desktop\Consoleapp\MazeRunnerr\MazeRunnerr\bin\Debug\netcoreapp3.1\MazeRunner.pdb
+C:\Users\USER\Desktop\Consoleapp\MazeRunnerr\MazeRunnerr\obj\Debug\netcoreapp3.1\MazeRunnerr.csproj.CopyComplete

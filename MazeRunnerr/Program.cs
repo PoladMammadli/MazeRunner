@@ -11,8 +11,10 @@ using MazeRunnerr.GameManager;
 using MazeRunnerr.GameCoins;
 using System.Drawing;
 using System.Linq;
+using System.Threading;
+using MazeRunnerr.GameStore;
 
-namespace MazeRunnerr
+namespace MazeRunnerConsole
 {
     internal class Program
     {
@@ -24,7 +26,7 @@ namespace MazeRunnerr
             List<IGameCoin> gameCoins = null;
             int size = 0;
 
-            GameState.GameState gameState = GameState.GameState.DeSerialize();
+            GameState gameState = GameState.DeSerialize();
 
             Console.WriteLine("- Play new game -");
             Console.WriteLine("- Load previous game -");
@@ -68,7 +70,6 @@ namespace MazeRunnerr
                     Console.WriteLine("Wrong input");
                     return;
             }
-
 
 
 
@@ -156,34 +157,30 @@ namespace MazeRunnerr
                 }
             }
             while (checkWall || checkCoin || checkEnemy || checkPlayerWall || checkEnemyPlayer || checkCoinPlayer || checkEnemyWall || checkEnemyCoin || checkCoinWall);
+
             ConsoleKey key;
 
             IPlayerPositionManager playerPositionManager = new PlayerPositionManager(playerSpawn, gameEnemies, gameWalls, gameCoins, size);
             IEnemyPositionManager enemyPositionManager = new EnemyPositionManager(playerSpawn, gameWalls, gameEnemies, gameCoins, size);
 
             Update(playerSpawn, gameWalls, gameEnemies, gameCoins, size);
-
             do
             {
                 key = Console.ReadKey().Key;
+
                 if (key == ConsoleKey.S)
                 {
-
-                    //foreach (var gameWall in gameWalls)
-                    //{
-                    //    GameWall gameWall2 = (GameWall)gameWall;
-                    //    gameWalls2.Add(gameWall2);
-                    //}
-
-                    gameState = new GameState.GameState(playerSpawn, gameWalls, gameEnemies, gameCoins, size);
+                    gameState = new GameState(playerSpawn, gameWalls, gameEnemies, gameCoins, size);
                     gameState.Serialize();
                     Console.WriteLine("Game saved!");
                     return;
                 }
+
                 if (key == ConsoleKey.Escape)
                 {
                     continue;
                 }
+
                 string playerInput = key.ToString();
                 Direction playerDirection;
                 try
@@ -198,6 +195,7 @@ namespace MazeRunnerr
                 }
 
                 playerPositionManager.PlayerKey = playerDirection;
+
                 bool playerTouchedWall = false;
                 bool playerTouchedEnemy = false;
                 bool enemyTouchedPlayer = false;
@@ -218,14 +216,14 @@ namespace MazeRunnerr
 
                 if (playerTouchedEnemy && enemyTouchedPlayer)
                 {
-                    Console.WriteLine("Game Over 1");
-                    Console.ReadLine();
+                    Console.WriteLine("Game Over");
+                    return;
                 }
 
                 if (playerTouchedWall && enemyTouchedPlayer)
                 {
-                    Console.WriteLine("Game Over 2");
-                    Console.ReadLine();
+                    Console.WriteLine("Game Over");
+                    return;
                 }
 
                 if (playerCanMove)
@@ -233,20 +231,21 @@ namespace MazeRunnerr
                     playerSpawn.Move(playerDirection);
                 }
 
-                var removeCoin = playerPositionManager.GetRemovableCoin();
-                if (removeCoin != null)
+                var removableCoin = playerPositionManager.GetRemovableCoin();
+                if (removableCoin != null)
                 {
-                    gameCoins.Remove(removeCoin);
+                    gameCoins.Remove(removableCoin);
                     playerSpawn.Point++;
                 }
 
                 if (!playerPositionManager.FinalCheckPlayerEnemyContact())
                 {
-                    Console.WriteLine("Game Over 3");
-                    Console.ReadLine();
+                    Console.WriteLine("Game Over");
+                    return;
                 }
 
                 Update(playerSpawn, gameWalls, gameEnemies, gameCoins, size);
+
                 if (gameCoins.Count == 0)
                 {
                     Console.WriteLine("Congrats! You Win");

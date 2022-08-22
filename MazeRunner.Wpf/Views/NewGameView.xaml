@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="MazeRunner.Wpf.Views.NewGameView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MazeRunner.Wpf.Views"
+             mc:Ignorable="d" 
+             >
+    <UserControl.InputBindings>
+        <KeyBinding Key="Return" Command="{Binding StartCommand}" />
+    </UserControl.InputBindings>
+
+    <Grid  Width="600" Height="600">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" Text="Enter Size of the Maze" />
+        <TextBox  HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" Height="20" Grid.Row="2" Grid.Column="1" Text="{Binding GameSize, UpdateSourceTrigger=PropertyChanged}" />
+        <Button Width="150" Height="20" Grid.Row="3" Grid.Column="1" Content="Start" Command="{Binding StartCommand}" />
+    </Grid>
+</UserControl>

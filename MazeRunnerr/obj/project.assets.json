@@ -1,11 +1,30 @@
 {
   "version": 3,
   "targets": {
-    ".NETCoreApp,Version=v3.1": {}
+    ".NETCoreApp,Version=v3.1": {
+      "MazeRunner/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "compile": {
+          "bin/placeholder/MazeRunner.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/MazeRunner.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "MazeRunner/1.0.0": {
+      "type": "project",
+      "path": "../MazeRunner/MazeRunner.csproj",
+      "msbuildProject": "../MazeRunner/MazeRunner.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    ".NETCoreApp,Version=v3.1": []
+    ".NETCoreApp,Version=v3.1": [
+      "MazeRunner >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\USER\\.nuget\\packages\\": {}
@@ -13,9 +32,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\USER\\Desktop\\Consoleapp\\MazeRunnerr\\MazeRunnerr\\MazeRunnerr.csproj",
-      "projectName": "MazeRunnerr",
-      "projectPath": "C:\\Users\\USER\\Desktop\\Consoleapp\\MazeRunnerr\\MazeRunnerr\\MazeRunnerr.csproj",
+      "projectUniqueName": "C:\\Users\\USER\\Desktop\\Consoleapp\\MazeRunnerr\\MazeRunnerr\\MazeRunnerConsole.csproj",
+      "projectName": "MazeRunnerConsole",
+      "projectPath": "C:\\Users\\USER\\Desktop\\Consoleapp\\MazeRunnerr\\MazeRunnerr\\MazeRunnerConsole.csproj",
       "packagesPath": "C:\\Users\\USER\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\USER\\Desktop\\Consoleapp\\MazeRunnerr\\MazeRunnerr\\obj\\",
       "projectStyle": "PackageReference",
@@ -33,7 +52,11 @@
       "frameworks": {
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\USER\\Desktop\\Consoleapp\\MazeRunnerr\\MazeRunner\\MazeRunner.csproj": {
+              "projectPath": "C:\\Users\\USER\\Desktop\\Consoleapp\\MazeRunnerr\\MazeRunner\\MazeRunner.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

@@ -11,13 +11,10 @@ namespace MazeRunner.Wpf.ViewModels
     public class MainMenuViewModel : ViewModelBase
     {
         public ICommand PlayCommand { get; }
-
         public ICommand LoadGameCommand { get; }
-
         public ICommand ExitGameCommand { get; }
 
         private bool _isScoreUpdated;
-
         public bool IsScoreUpdated
         {
             get => _isScoreUpdated; set
@@ -28,7 +25,6 @@ namespace MazeRunner.Wpf.ViewModels
         }
 
         private int _totalScore;
-
         public int TotalScore
         {
             get => _totalScore; set

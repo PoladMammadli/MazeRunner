@@ -41,7 +41,14 @@ namespace MazeRunner.Wpf.SetTimer
 
         private void Update(object sender, EventArgs e)
         {
-            _gameObject.UpdateObjects(_objects);
+            var updatedObjects = _gameObject.GetUpdatableObjects();
+
+            _objects.Clear();
+
+            foreach (var updatedObject in updatedObjects)
+            {
+                _objects.Add(updatedObject);
+            }
         }
     }
 }

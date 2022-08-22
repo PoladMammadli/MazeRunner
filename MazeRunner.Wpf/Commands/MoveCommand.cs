@@ -9,21 +9,22 @@ using System.Windows.Media;
 
 namespace MazeRunner.Wpf.Commands
 {
-    public class MoveLeftCommand : CommandBase
+    public class MoveCommand : CommandBase
     {
         private readonly GameAreaViewModel _gameAreaViewModel;
         private readonly GameObject _gameObject;
-
-        public MoveLeftCommand(GameAreaViewModel gameAreaViewModel, GameObject gameObject)
+        private readonly Direction _direction;
+        public MoveCommand(GameAreaViewModel gameAreaViewModel, GameObject gameObject, Direction direction)
         {
             this._gameAreaViewModel = gameAreaViewModel;
             this._gameObject = gameObject;
+            _direction = direction;
         }
 
         public override void Execute(object parameter)
         {
             _gameObject.playTimer.Start();
-            _gameObject.PlayerDirection = Direction.LeftArrow;
+            _gameObject.PlayerDirection = _direction;
             //_gameObject.UpdateObjects(_gameAreaViewModel.GameObject);
             _gameObject.Play();
             _gameAreaViewModel.Point = _gameObject.playerSpawn.Point;

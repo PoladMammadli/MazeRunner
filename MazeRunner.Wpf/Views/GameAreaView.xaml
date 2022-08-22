@@ -47,24 +47,19 @@
             </DataTemplate>
 
             <Style TargetType="{x:Type ContentPresenter}">
-                <Setter Property="Grid.Row"
-                        Value="{Binding Row}" />
-                <Setter Property="Grid.Column"
-                        Value="{Binding Column}" />
+                <Setter Property="Grid.Row" Value="{Binding Row}" />
+                <Setter Property="Grid.Column" Value="{Binding Column}" />
             </Style>
         </Grid.Resources>
-        <Border BorderBrush="Black"
-                BorderThickness="1">
-            <ItemsControl x:Name="Board" 
-                         ItemsSource="{Binding GameObject}">
+        <Border BorderBrush="Black" BorderThickness="1">
+            <ItemsControl x:Name="Board" ItemsSource="{Binding GameObjects}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <Grid ShowGridLines="True" hlpr:GridHelper.ColumnCount="{Binding ColumnCount}"  hlpr:GridHelper.RowCount="{Binding RowCount}" >
+                        <Grid ShowGridLines="True"  hlpr:GridHelper.ColumnCount="{Binding ColumnCount}"  hlpr:GridHelper.RowCount="{Binding RowCount}" >
                             
                         </Grid>
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
-
             </ItemsControl>
         </Border>
 

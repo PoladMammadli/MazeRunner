@@ -1,6 +1,7 @@
 ﻿using MazeRunner.Wpf.Commands;
 using MazeRunner.Wpf.Models;
 using MazeRunner.Wpf.Stores;
+using MazeRunnerr.Enums;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,24 +18,24 @@ namespace MazeRunner.Wpf.ViewModels
             _point = point;
             _gameSize = gameSize;
             this._gameObjectLocation = gameObjectLocation;
-            this._gameObject = gameObject;
-            RightCommand = new MoveRightCommand(this, gameObjectLocation);
-            LeftCommand = new MoveLeftCommand(this, gameObjectLocation);
-            DownCommand = new MoveDownCommand(this, gameObjectLocation);
-            UpCommand = new MoveUpCommand(this, gameObjectLocation);
+            this._gameObjects = gameObject;
+            RightCommand = new MoveCommand(this, gameObjectLocation, Direction.RightArrow);
+            LeftCommand = new MoveCommand(this, gameObjectLocation, Direction.LeftArrow);
+            DownCommand = new MoveCommand(this, gameObjectLocation, Direction.DownArrow);
+            UpCommand = new MoveCommand(this, gameObjectLocation, Direction.UpArrow);
             SaveCommand = new SaveGameCommand(navigationStore, gameObjectLocation);
         }
 
         private readonly GameObject _gameObjectLocation;
         public GameObject GameObjectLocation { get => _gameObjectLocation; }
 
-        ObservableCollection<ObjectPositionViewModel> _gameObject;
-        public ObservableCollection<ObjectPositionViewModel> GameObject
+        private ObservableCollection<ObjectPositionViewModel> _gameObjects;
+        public ObservableCollection<ObjectPositionViewModel> GameObjects
         {
-            get => _gameObject; set
+            get => _gameObjects; set
             {
-                _gameObject = value;
-                OnPropertyChanged(nameof(GameObject));
+                _gameObjects = value;
+                OnPropertyChanged(nameof(GameObjects));
             }
         }
 

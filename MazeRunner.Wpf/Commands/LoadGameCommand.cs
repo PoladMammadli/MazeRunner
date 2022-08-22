@@ -58,7 +58,15 @@ namespace MazeRunner.Wpf.Commands
             _gameObject.gameCoins = gameState.GameCoins.OfType<IGameCoin>().ToList();
             _gameObject.gameEnemies = gameState.GameEnemies.OfType<IGameEnemy>().ToList();
             _gameObject.size = gameSize;
-            _gameObject.UpdateObjects(Objects);
+
+            var updatedObjects = _gameObject.GetUpdatableObjects();
+
+            Objects.Clear();
+
+            foreach(var updatedObject in updatedObjects)
+            {
+                Objects.Add(updatedObject);
+            }
 
             _gameTimer = new GameTimer(_gameObject, Objects);
             _gameTimer.SetPlayTimer();

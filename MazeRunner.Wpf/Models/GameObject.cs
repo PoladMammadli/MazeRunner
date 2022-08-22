@@ -52,12 +52,16 @@ namespace MazeRunner.Wpf.Models
             gameCoins = gameManager.CreateCoins(size);
         }
 
-        public void UpdateObjects(ObservableCollection<ObjectPositionViewModel> objects)
+        public List<ObjectPositionViewModel> GetUpdatableObjects()
         {
             string colorStr;
+            
             BrushConverter brushConverter = new BrushConverter();
+            
             Brush brush;
-            objects.Clear();
+
+            List<ObjectPositionViewModel> objects = new List<ObjectPositionViewModel>();
+
             foreach (var gameWall in gameWalls)
             {
                 colorStr = gameWall.Color.ToString();
@@ -66,6 +70,7 @@ namespace MazeRunner.Wpf.Models
                 WallPositionViewModel objectVM = new WallPositionViewModel { Row = gameWall.Y, Column = gameWall.X, Fill = brush };
                 objects.Add(objectVM);
             }
+
             foreach (var gameEnemy in gameEnemies)
             {
                 colorStr = gameEnemy.Color.ToString();
@@ -73,6 +78,7 @@ namespace MazeRunner.Wpf.Models
                 EnemyPositionViewModel objectVM = new EnemyPositionViewModel { Row = gameEnemy.Y, Column = gameEnemy.X, Fill = brush };
                 objects.Add(objectVM);
             }
+
             foreach (var gameCoin in gameCoins)
             {
                 colorStr = gameCoin.Color.ToString();
@@ -83,9 +89,12 @@ namespace MazeRunner.Wpf.Models
 
             colorStr = playerSpawn.Color.ToString();
             brush = (Brush)brushConverter.ConvertFromString(colorStr);
+
             objects.Add(new PlayerPositionViewModel { Row = playerSpawn.Y, Column = playerSpawn.X, Fill = brush });
+
+            return objects;
         }
-        
+
         public void Start()
         {
             bool checkWall = false;

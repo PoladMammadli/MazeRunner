@@ -136,6 +136,38 @@ namespace MazeRunnerr.PositionManager
                 {
                     return false;
                 }
+                else if (enemyY + 1 == enemy2Y && enemyX == enemy2X && gameEnemy.Direction == Direction.DownArrow && gameEnemy2.Direction == Direction.RightArrow && gameEnemy != gameEnemy2)
+                {
+                    return false;
+                }
+                else if (enemyY + 1 == enemy2Y && enemyX == enemy2X && gameEnemy.Direction == Direction.DownArrow && gameEnemy2.Direction == Direction.LeftArrow && gameEnemy != gameEnemy2)
+                {
+                    return false;
+                }
+                else if (enemyY - 1 == enemy2Y && enemyX == enemy2X && gameEnemy.Direction == Direction.UpArrow && gameEnemy2.Direction == Direction.LeftArrow && gameEnemy != gameEnemy2)
+                {
+                    return false;
+                }
+                else if (enemyY - 1 == enemy2Y && enemyX == enemy2X && gameEnemy.Direction == Direction.UpArrow && gameEnemy2.Direction == Direction.RightArrow && gameEnemy != gameEnemy2)
+                {
+                    return false;
+                }
+                else if (enemyX + 1 == enemy2X && enemyY == enemy2Y && gameEnemy.Direction == Direction.RightArrow && gameEnemy2.Direction == Direction.UpArrow && gameEnemy != gameEnemy2)
+                {
+                    return false;
+                }
+                else if (enemyX + 1 == enemy2X && enemyY == enemy2Y && gameEnemy.Direction == Direction.RightArrow && gameEnemy2.Direction == Direction.DownArrow && gameEnemy != gameEnemy2)
+                {
+                    return false;
+                }
+                else if (enemyX - 1 == enemy2X && enemyY == enemy2Y && gameEnemy.Direction == Direction.LeftArrow && gameEnemy2.Direction == Direction.UpArrow && gameEnemy != gameEnemy2)
+                {
+                    return false;
+                }
+                else if (enemyX - 1 == enemy2X && enemyY == enemy2Y && gameEnemy.Direction == Direction.LeftArrow && gameEnemy2.Direction == Direction.DownArrow && gameEnemy != gameEnemy2)
+                {
+                    return false;
+                }
             }
             return true;
         }

@@ -28,10 +28,7 @@ namespace MazeRunnerr.GameStore
             this.Size = size;
         }
 
-        public GameState()
-        {
-
-        }
+        public GameState() { }
 
         public static bool CheckFolderExists(ref string path)
         {

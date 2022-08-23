@@ -20,7 +20,6 @@ namespace MazeRunner.Wpf.Commands
     {
         private readonly NavigationStore _navigationStore;
         private readonly GameObject _gameObject;
-        public ObservableCollection<ObjectPositionViewModel> Objects = new ObservableCollection<ObjectPositionViewModel>();
         private GameTimer _gameTimer;
 
         public LoadGameCommand(NavigationStore navigationStore, GameObject gameObject)
@@ -44,6 +43,7 @@ namespace MazeRunner.Wpf.Commands
         public override void Execute(object parameter)
         {
             GameState gameState = GameState.DeSerialize();
+            ObservableCollection<ObjectPositionViewModel> objects = new ObservableCollection<ObjectPositionViewModel>();
 
             if (gameState == null)
             {
@@ -61,18 +61,18 @@ namespace MazeRunner.Wpf.Commands
 
             var updatedObjects = _gameObject.GetUpdatableObjects();
 
-            Objects.Clear();
+            objects.Clear();
 
             foreach(var updatedObject in updatedObjects)
             {
-                Objects.Add(updatedObject);
+                objects.Add(updatedObject);
             }
 
-            _gameTimer = new GameTimer(_gameObject, Objects);
+            _gameTimer = new GameTimer(_gameObject, objects);
             _gameTimer.SetPlayTimer();
             _gameTimer.SetUpdateTimer();
 
-            _navigationStore.CurrentViewModel = new GameAreaViewModel(_gameObject, Objects, _navigationStore, _gameObject.playerSpawn.Point, gameSize);
+            _navigationStore.CurrentViewModel = new GameAreaViewModel(_gameObject, objects, _navigationStore, _gameObject.playerSpawn.Point, gameSize);
         }
     }
 }

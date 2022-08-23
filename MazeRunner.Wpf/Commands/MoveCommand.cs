@@ -25,7 +25,6 @@ namespace MazeRunner.Wpf.Commands
         {
             _gameObject.playTimer.Start();
             _gameObject.PlayerDirection = _direction;
-            //_gameObject.UpdateObjects(_gameAreaViewModel.GameObject);
             _gameObject.Play();
             _gameAreaViewModel.Point = _gameObject.playerSpawn.Point;
         }
